@@ -32,6 +32,12 @@ npm run dev
 npm run test
 ```
 
+## Running End-to-End Tests
+```bash
+npm run test:e2e:install
+npm run test:e2e
+```
+
 ## Running Full Checks
 ```bash
 npm run check
@@ -60,6 +66,8 @@ The fourth iteration makes the activity column more informative. Instead of only
 The fifth iteration makes the interface shareable and refresh-safe. The selected username, repository search query, language filter, and sort mode now live in the URL, so opening the same link restores the same view. Browser back and forward navigation also rehydrate the app state instead of leaving the controls out of sync with the page.
 
 The sixth iteration adds deployment wiring for Vercel and ships the first live hosted release from the terminal. The repository now includes explicit Vercel build/output settings, a matching ignore file, and deploy scripts for preview and production targets. That keeps deployment behavior versioned with the app instead of hiding it in dashboard-only configuration, and it gives the project a real hosted URL tied to the repo workflow.
+
+The seventh iteration adds browser-level test coverage around the app's main workflow. Playwright now runs the viewer in a real browser, stubs GitHub API responses for deterministic results, and verifies search, repository filtering, URL persistence, refresh behavior, browser history, and the empty-activity state. CI now runs those end-to-end checks in addition to the existing unit tests and build.
 
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.

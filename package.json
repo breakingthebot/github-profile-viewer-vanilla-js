@@ -1,17 +1,19 @@
 {
   "name": "github-profile-viewer",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "private": true,
   "type": "module",
   "description": "A vanilla JavaScript GitHub profile viewer for user profiles, repositories, and recent public activity.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "check": "npm run test && npm run build",
+    "check": "npm run test && npm run build && npm run test:e2e",
     "deploy:preview": "vercel --target preview",
     "deploy:prod": "vercel --prod",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:e2e": "npm run build && playwright test",
+    "test:e2e:install": "playwright install chromium"
   },
   "keywords": [
     "github",
@@ -22,6 +24,7 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "vite": "^8.1.0",
     "vitest": "^4.1.9"
   }

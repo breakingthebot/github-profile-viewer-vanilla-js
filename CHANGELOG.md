@@ -45,3 +45,10 @@
 - Deployment scripts for preview and production Vercel releases.
 - Workspace settings for consistent local editor behavior.
 - First live Vercel deployment for the project.
+
+## [0.7.0] - 2026-06-27
+
+### Added
+- Playwright end-to-end browser tests for the core profile-viewer flow.
+- Deterministic GitHub API fixtures for browser tests.
+- CI coverage for headless Chromium end-to-end verification.
