@@ -79,6 +79,8 @@ The eleventh iteration improves keyboard and focus behavior. The app now include
 
 The twelfth iteration tightens the semantics around the loaded results instead of changing the visual design again. The repository explorer and recent activity panels now expose clear landmark names and descriptions to assistive technology, their lists are labeled directly, and the skip link moves focus into the loaded profile area instead of only changing scroll position. That makes the polished UI easier to navigate when using a keyboard or screen reader.
 
+The thirteenth iteration adds a practical sharing workflow on top of the existing URL-state model. The search form now includes a copy-link action that captures the currently loaded username plus any active repository filters, writes the full URL to the clipboard, and reports success or failure inline. The copy behavior is isolated in its own clipboard service and URL builder so the feature stays testable instead of mixing browser-specific details into the main app flow.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

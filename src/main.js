@@ -22,8 +22,10 @@ import {
   normalizeRepositoryExplorerState,
 } from "./models/repositoryExplorer.js";
 import { fetchGithubProfileBundle } from "./services/githubApi.js";
+import { copyTextToClipboard } from "./services/clipboard.js";
 import { createStatusContentFromError } from "./utils/errorMessages.js";
 import { logError, logInfo } from "./utils/logger.js";
+import { createShareUrl } from "./utils/shareUrl.js";
 import { createUrlStateSearch, parseUrlState } from "./utils/urlState.js";
 
 const appRoot = document.querySelector("#app");
@@ -93,6 +95,8 @@ function getAppRegions() {
     input: document.querySelector("#username"),
     statusAction: document.querySelector("[data-status-action]"),
     profileHeading: document.querySelector("[data-profile-heading]"),
+    shareButton: document.querySelector("[data-share-button]"),
+    shareFeedback: document.querySelector("[data-share-feedback]"),
   };
 }
 
@@ -121,6 +125,33 @@ function syncSearchInput(username) {
 }
 
 /**
+ * Updates the inline share-link feedback message.
+ *
+ * @param {string} message - Feedback copy to render.
+ * @param {"info" | "error"} [variant] - Feedback tone.
+ * @returns {void}
+ */
+function updateShareFeedback(message, variant = "info") {
+  const { shareFeedback } = getAppRegions();
+
+  if (!shareFeedback) {
+    return;
+  }
+
+  shareFeedback.textContent = message;
+  shareFeedback.dataset.variant = message ? variant : "";
+}
+
+/**
+ * Clears the current share-link feedback message.
+ *
+ * @returns {void}
+ */
+function clearShareFeedback() {
+  updateShareFeedback("");
+}
+
+/**
  * Writes the current app state into the browser URL.
  *
  * @param {"replace" | "push"} mode - History update mode.
@@ -135,10 +166,12 @@ function syncUrlState(mode = "replace") {
 
   if (mode === "push") {
     window.history.pushState(null, "", nextUrl);
+    clearShareFeedback();
     return;
   }
 
   window.history.replaceState(null, "", nextUrl);
+  clearShareFeedback();
 }
 
 /**
@@ -179,6 +212,33 @@ function registerStatusAction() {
 
   statusAction.addEventListener("click", async () => {
     await loadProfile(currentUsername);
+  });
+}
+
+/**
+ * Registers the share-link button behavior.
+ *
+ * @returns {void}
+ */
+function registerShareAction() {
+  const { shareButton } = getAppRegions();
+
+  shareButton?.addEventListener("click", async () => {
+    const shareUrl = createShareUrl(window.location.href, {
+      username: currentUsername,
+      repositoryExplorerState,
+    });
+
+    try {
+      await copyTextToClipboard(shareUrl);
+      updateShareFeedback("Share link copied.");
+    } catch (error) {
+      updateShareFeedback("Unable to copy automatically. Copy the URL from your browser bar instead.", "error");
+      logError("share.copy.failure", {
+        username: currentUsername,
+        message: error instanceof Error ? error.message : "Unknown clipboard error",
+      });
+    }
   });
 }
 
@@ -360,6 +420,7 @@ function registerKeyboardShortcuts() {
 renderShell();
 registerSearch();
 registerHistoryNavigation();
+registerShareAction();
 registerSkipLink();
 registerKeyboardShortcuts();
 loadProfile(initialUsername, { focusTarget: "none" });

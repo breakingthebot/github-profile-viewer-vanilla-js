@@ -34,9 +34,15 @@ export function renderSearchForm(defaultUsername) {
           spellcheck="false"
           aria-describedby="username-hint"
         />
-        <button class="search-form__button" type="submit">Load profile</button>
+        <div class="search-form__actions">
+          <button class="search-form__button" type="submit">Load profile</button>
+          <button class="search-form__button search-form__button--secondary" data-share-button type="button">
+            Copy share link
+          </button>
+        </div>
       </div>
       <p class="search-form__hint" id="username-hint">Try <span>octocat</span>, <span>vercel</span>, or any public GitHub username.</p>
+      <p aria-live="polite" class="search-form__share-feedback" data-share-feedback></p>
     </form>
   `;
 }

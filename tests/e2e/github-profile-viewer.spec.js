@@ -158,4 +158,34 @@ test.describe("GitHub profile viewer", () => {
     await expect(page.getByLabel("Visible repositories")).toBeVisible();
     await expect(page.getByLabel("Recent public activity feed")).toBeVisible();
   });
+
+  /**
+   * Verifies the share-link action copies the current URL state and shows feedback.
+   *
+   * @returns {Promise<void>}
+   */
+  test("copies a share link for the current loaded state", async ({ page }) => {
+    await page.addInitScript(() => {
+      window.__copiedShareUrl = "";
+      Object.defineProperty(window.navigator, "clipboard", {
+        configurable: true,
+        value: {
+          writeText: async (value) => {
+            window.__copiedShareUrl = value;
+          },
+        },
+      });
+    });
+    await mockGithubApi(page);
+    await page.goto("/");
+
+    await page.getByLabel("Search repositories").fill("docs");
+    await page.getByLabel("Language").selectOption("TypeScript");
+    await page.getByRole("button", { name: "Copy share link" }).click();
+
+    await expect(page.getByText("Share link copied.")).toBeVisible();
+    await expect
+      .poll(async () => page.evaluate(() => window.__copiedShareUrl))
+      .toContain("user=octocat&repoQuery=docs&language=TypeScript");
+  });
 });

@@ -86,3 +86,10 @@
 - Named repository and activity regions with clearer accessible labels and descriptions.
 - Explicit labels for the visible repository list and recent activity feed.
 - Browser coverage for skip-link navigation into loaded results.
+
+## [0.13.0] - 2026-06-27
+
+### Added
+- A copyable share-link action tied to the current username and repository explorer state.
+- A modular clipboard service with browser and document-fallback copy paths.
+- Unit and browser coverage for share URL generation and copy feedback.
