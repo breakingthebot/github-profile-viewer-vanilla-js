@@ -71,6 +71,8 @@ The seventh iteration adds browser-level test coverage around the app's main wor
 
 The eighth iteration upgrades the interface from a functional dashboard into a more editorial product surface. The hero now explains the product more clearly, the search form feels like a primary entry point instead of a plain control strip, and the profile, repository, and activity sections have stronger hierarchy, spacing, and typography. The underlying behavior stays the same, but the app now presents that information with more intention and visual rhythm.
 
+The ninth iteration tightens the deployed profile card after live review. The identity block and Directory metadata now have stronger column separation, safer text wrapping, and denser detail cards so longer names or profile values do not bleed across the card on desktop widths.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

@@ -59,3 +59,9 @@
 - Editorial-style visual redesign across the hero, search form, profile, repository, and activity sections.
 - Stronger typography, spacing, panel hierarchy, and badge treatments for clearer scanning.
 - Mobile-friendly layout refinements that preserve the existing functionality.
+
+## [0.9.0] - 2026-06-27
+
+### Added
+- Tightened profile-card spacing and wrapping behavior for long names and metadata values.
+- Stronger separation between the identity block and the Directory details column.

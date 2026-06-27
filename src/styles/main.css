@@ -272,8 +272,8 @@ select {
 
 .profile-card {
   display: grid;
-  grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  gap: 1.8rem;
   padding: 1.35rem;
   margin-bottom: 1.25rem;
 }
@@ -282,6 +282,7 @@ select {
 .profile-card__content {
   display: grid;
   gap: 1rem;
+  min-width: 0;
 }
 
 .profile-card__identity {
@@ -302,7 +303,14 @@ select {
 
 .profile-card__identity-copy {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.5rem;
+}
+
+.profile-card__content {
+  align-content: start;
+  padding: 0.25rem 0 0.25rem 1.25rem;
+  border-left: 1px solid rgba(29, 20, 15, 0.08);
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .profile-card__title {
@@ -310,6 +318,8 @@ select {
   font-family: var(--font-display);
   font-size: clamp(2rem, 4vw, 3rem);
   line-height: 0.95;
+  max-width: 9ch;
+  overflow-wrap: anywhere;
 }
 
 .profile-card__eyebrow,
@@ -320,6 +330,7 @@ select {
 
 .profile-card__bio {
   line-height: 1.7;
+  overflow-wrap: anywhere;
 }
 
 .profile-card__stats,
@@ -338,7 +349,11 @@ select {
 .profile-card__details,
 .repository-insights,
 .activity-insights {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+}
+
+.profile-card__details {
+  gap: 0.7rem 0.8rem;
 }
 
 .profile-card__stats div,
@@ -352,6 +367,11 @@ select {
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid rgba(29, 20, 15, 0.06);
   border-radius: var(--radius-small);
+}
+
+.profile-card__details div {
+  min-width: 0;
+  padding: 0.85rem 0.9rem;
 }
 
 .profile-card__stats dt,
@@ -372,8 +392,10 @@ select {
 .repository-insights dd,
 .activity-insights dd {
   margin: 0.45rem 0 0;
-  font-size: 1rem;
+  font-size: 0.96rem;
   font-weight: 700;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
 }
 
 .activity-insights__note {
@@ -384,6 +406,7 @@ select {
 
 .profile-card__section-label {
   margin-top: 0.25rem;
+  padding-left: 0.1rem;
 }
 
 .profile-card__link {
@@ -529,6 +552,17 @@ select {
   }
 
   .hero__title {
+    max-width: none;
+  }
+
+  .profile-card__content {
+    padding-left: 0;
+    padding-top: 1.2rem;
+    border-left: 0;
+    border-top: 1px solid rgba(29, 20, 15, 0.08);
+  }
+
+  .profile-card__title {
     max-width: none;
   }
 }
