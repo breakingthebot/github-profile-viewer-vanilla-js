@@ -1,12 +1,13 @@
 {
   "name": "github-profile-viewer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "description": "A vanilla JavaScript GitHub profile viewer for user profiles, repositories, and recent public activity.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "check": "npm run test && npm run build",
     "preview": "vite preview",
     "test": "vitest run"
   },

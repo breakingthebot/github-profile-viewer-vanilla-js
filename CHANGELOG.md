@@ -15,3 +15,9 @@
 - Repository insight metrics for visible repos, stars, languages, and the top-starred repo.
 - Expanded profile metadata including company, location, website, and join date.
 - Unit tests for repository filtering and summary logic.
+
+## [0.3.0] - 2026-06-27
+
+### Added
+- GitHub Actions CI workflow for install, test, and build checks on Node.js 22.
+- Local `npm run check` script that mirrors the CI verification steps.
