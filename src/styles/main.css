@@ -185,7 +185,8 @@ a {
 
 .profile-card__stats,
 .profile-card__details,
-.repository-insights {
+.repository-insights,
+.activity-insights {
   display: grid;
   gap: 0.75rem;
   margin: 0;
@@ -196,13 +197,15 @@ a {
 }
 
 .profile-card__details,
-.repository-insights {
+.repository-insights,
+.activity-insights {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .profile-card__stats div,
 .profile-card__details div,
 .repository-insights__item,
+.activity-insights__item,
 .repository-list__item,
 .activity-feed__item {
   padding: 1rem;
@@ -212,7 +215,8 @@ a {
 
 .profile-card__stats dt,
 .profile-card__details dt,
-.repository-insights dt {
+.repository-insights dt,
+.activity-insights dt {
   color: var(--color-muted);
   font-size: 0.85rem;
 }
@@ -224,10 +228,17 @@ a {
 }
 
 .profile-card__details dd,
-.repository-insights dd {
+.repository-insights dd,
+.activity-insights dd {
   margin: 0.35rem 0 0;
   font-size: 1rem;
   font-weight: 700;
+}
+
+.activity-insights__note {
+  margin: 0.45rem 0 0;
+  color: var(--color-muted);
+  font-size: 0.88rem;
 }
 
 .profile-card__link {
@@ -285,12 +296,31 @@ a {
 }
 
 .repository-list,
-.activity-feed {
+.activity-feed,
+.activity-breakdown__list {
   display: grid;
   gap: 0.85rem;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.activity-breakdown {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.activity-breakdown__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  background: rgba(255, 255, 255, 0.58);
+  border-radius: var(--radius-small);
+}
+
+.activity-breakdown__item strong {
+  font-size: 0.95rem;
 }
 
 .repository-list__name {
@@ -320,7 +350,8 @@ a {
   .profile-card__stats,
   .profile-card__details,
   .repository-controls,
-  .repository-insights {
+  .repository-insights,
+  .activity-insights {
     grid-template-columns: 1fr;
   }
 }

@@ -40,6 +40,42 @@ export function formatDate(value) {
 }
 
 /**
+ * Formats an ISO date string into a readable date and time.
+ *
+ * @param {string | null | undefined} value - Date string to format.
+ * @returns {string} Human-readable date and time string.
+ */
+export function formatDateTime(value) {
+  if (!value) {
+    return "Unknown time";
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    timeZone: "UTC",
+    timeZoneName: "short",
+  }).format(new Date(value));
+}
+
+/**
+ * Formats a GitHub event type into a readable label.
+ *
+ * @param {string | null | undefined} eventType - GitHub event type.
+ * @returns {string} Human-readable event type.
+ */
+export function formatEventType(eventType) {
+  if (!eventType) {
+    return "Unknown activity";
+  }
+
+  return eventType.replace(/Event$/, "").replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
+/**
  * Builds a readable activity label from a GitHub event payload.
  *
  * @param {object} event - GitHub public event.
@@ -59,5 +95,5 @@ export function formatEventLabel(event) {
     PullRequestEvent: `Worked on pull requests in ${repoName}`,
   };
 
-  return actionMap[event.type] ?? `${event.type.replace(/Event$/, "")} in ${repoName}`;
+  return actionMap[event.type] ?? `${formatEventType(event.type)} in ${repoName}`;
 }

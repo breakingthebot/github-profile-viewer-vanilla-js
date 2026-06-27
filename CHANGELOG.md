@@ -21,3 +21,11 @@
 ### Added
 - GitHub Actions CI workflow for install, test, and build checks on Node.js 22.
 - Local `npm run check` script that mirrors the CI verification steps.
+
+## [0.4.0] - 2026-06-27
+
+### Added
+- Activity insight metrics for total events, active days, top repository, and latest event timing.
+- Activity breakdown counts grouped by GitHub event type.
+- A clearer empty state for users without recent public activity.
+- Unit tests for activity summary helpers and new formatter behavior.

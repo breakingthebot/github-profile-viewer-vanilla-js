@@ -6,7 +6,7 @@
  */
 
 import "./styles/main.css";
-import { renderActivityFeed } from "./components/activityFeed.js";
+import { renderActivityPanel } from "./components/activityPanel.js";
 import { renderProfileCard } from "./components/profileCard.js";
 import { renderRepositoryExplorer } from "./components/repositoryExplorer.js";
 import { renderSearchForm } from "./components/searchForm.js";
@@ -14,6 +14,7 @@ import { renderStatusPanel } from "./components/statusPanel.js";
 import { APP_CONFIG } from "./config/appConfig.js";
 import { ENV_CONFIG } from "./config/env.js";
 import { createProfileSummary } from "./models/profileSummary.js";
+import { createActivityInsightsModel } from "./models/activityInsights.js";
 import {
   createInitialRepositoryExplorerState,
   createRepositoryExplorerModel,
@@ -94,13 +95,14 @@ function clearStatus() {
 function renderResults(summary) {
   const { resultsRegion } = getAppRegions();
   const repositoryExplorer = createRepositoryExplorerModel(summary.repositories, repositoryExplorerState);
+  const activityInsights = createActivityInsightsModel(summary.events);
 
   resultsRegion.innerHTML = `
     ${renderProfileCard(summary.profile)}
     <section class="content-grid">
       ${renderRepositoryExplorer(repositoryExplorer)}
       <div class="side-column">
-        ${renderActivityFeed(summary.events)}
+        ${renderActivityPanel(activityInsights)}
       </div>
     </section>
   `;

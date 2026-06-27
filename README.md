@@ -54,6 +54,8 @@ The second iteration turns the repository area into an actual explorer instead o
 
 The third iteration adds release hygiene around the code that already exists. A single `npm run check` command now mirrors the GitHub Actions workflow, and CI runs install, test, and build validation on Node.js 22 for pushes and pull requests. That keeps the branch history cleaner because each pushed iteration is verified the same way locally and remotely.
 
+The fourth iteration makes the activity column more informative. Instead of only listing recent events, the app now summarizes event volume, active days, the most frequently referenced repository, and grouped event-type counts. When GitHub returns no recent public events, the UI now explains that state directly instead of leaving the section feeling sparse.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

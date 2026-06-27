@@ -1,7 +1,7 @@
 /**
  * File: src/components/activityFeed.js
- * Purpose: Renders the recent public activity feed.
- * Connects to: src/main.js, src/utils/formatters.js
+ * Purpose: Renders the recent public activity feed list.
+ * Connects to: src/components/activityPanel.js, src/utils/formatters.js
  * Created: 2026-06-27
  */
 
@@ -26,14 +26,12 @@ export function renderActivityFeed(events) {
           `,
         )
         .join("")
-    : `<li class="activity-feed__item activity-feed__item--empty">No recent public activity available.</li>`;
+    : `
+      <li class="activity-feed__item activity-feed__item--empty">
+        <p class="activity-feed__title">No recent public activity available.</p>
+        <p class="activity-feed__date">Try another account or check back after this user has new public events.</p>
+      </li>
+    `;
 
-  return `
-    <section class="panel">
-      <div class="panel__header">
-        <h3>Recent activity</h3>
-      </div>
-      <ul class="activity-feed">${activityItems}</ul>
-    </section>
-  `;
+  return `<ul class="activity-feed">${activityItems}</ul>`;
 }
