@@ -17,12 +17,17 @@ import { renderActivityInsights } from "./activityInsights.js";
  */
 export function renderActivityPanel(activity) {
   return `
-    <section class="panel">
+    <section
+      class="panel"
+      aria-describedby="activity-panel-copy"
+      aria-labelledby="activity-panel-title"
+      data-results-panel="activity"
+    >
       <div class="panel__header panel__header--stacked">
         <div>
           <p class="panel__eyebrow">Activity</p>
-          <h3>Recent activity</h3>
-          <p class="panel__copy">
+          <h3 id="activity-panel-title">Recent activity</h3>
+          <p class="panel__copy" id="activity-panel-copy">
             ${
               activity.hasEvents
                 ? "Recent public events pulled from the GitHub API."

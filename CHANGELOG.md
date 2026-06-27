@@ -79,3 +79,10 @@
 - Accessibility and keyboard refinements including a skip link and slash-to-focus shortcut.
 - Better focus management after loads and recoverable errors.
 - Browser coverage for the keyboard shortcut behavior.
+
+## [0.12.0] - 2026-06-27
+
+### Added
+- Named repository and activity regions with clearer accessible labels and descriptions.
+- Explicit labels for the visible repository list and recent activity feed.
+- Browser coverage for skip-link navigation into loaded results.

@@ -33,5 +33,13 @@ export function renderActivityFeed(events) {
       </li>
     `;
 
-  return `<ul class="activity-feed">${activityItems}</ul>`;
+  return `
+    <ul
+      aria-label="Recent public activity feed"
+      class="activity-feed"
+      data-activity-feed
+    >
+      ${activityItems}
+    </ul>
+  `;
 }

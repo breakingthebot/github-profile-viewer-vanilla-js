@@ -77,6 +77,8 @@ The tenth iteration improves failure handling instead of adding another data pan
 
 The eleventh iteration improves keyboard and focus behavior. The app now includes a skip link, a slash shortcut that jumps directly to the username input, stronger status semantics for assistive technologies, and better focus management after successful loads and recoverable failures. That keeps the richer interface usable as it becomes more polished.
 
+The twelfth iteration tightens the semantics around the loaded results instead of changing the visual design again. The repository explorer and recent activity panels now expose clear landmark names and descriptions to assistive technology, their lists are labeled directly, and the skip link moves focus into the loaded profile area instead of only changing scroll position. That makes the polished UI easier to navigate when using a keyboard or screen reader.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

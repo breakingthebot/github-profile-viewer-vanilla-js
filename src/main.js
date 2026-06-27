@@ -42,7 +42,7 @@ let repositoryExplorerState = initialUrlState.repositoryExplorerState;
 function renderShell() {
   appRoot.innerHTML = `
     <main class="app-shell">
-      <a class="skip-link" href="#results">Skip to loaded profile</a>
+      <a class="skip-link" data-skip-link href="#results-heading">Skip to loaded profile</a>
       <section class="hero">
         <div class="hero__content">
           <p class="hero__eyebrow">Editorial GitHub Explorer</p>
@@ -69,7 +69,13 @@ function renderShell() {
       </section>
       ${renderSearchForm(initialUsername)}
       <section data-status-region></section>
-      <section id="results" data-results-region tabindex="-1"></section>
+      <section
+        aria-labelledby="results-heading"
+        data-results-region
+        id="results"
+      >
+        <h2 class="sr-only" id="results-heading" tabindex="-1">Loaded profile results</h2>
+      </section>
     </main>
   `;
 }
@@ -188,6 +194,7 @@ function renderResults(summary) {
   const activityInsights = createActivityInsightsModel(summary.events);
 
   resultsRegion.innerHTML = `
+    <h2 class="sr-only" id="results-heading" tabindex="-1">Loaded profile results</h2>
     ${renderProfileCard(summary.profile)}
     <section class="content-grid">
       ${renderRepositoryExplorer(repositoryExplorer)}
@@ -314,6 +321,22 @@ function registerHistoryNavigation() {
 }
 
 /**
+ * Registers explicit focus behavior for the skip link target.
+ *
+ * @returns {void}
+ */
+function registerSkipLink() {
+  const skipLink = document.querySelector("[data-skip-link]");
+
+  skipLink?.addEventListener("click", (event) => {
+    event.preventDefault();
+    const { profileHeading, resultsRegion } = getAppRegions();
+    const resultsHeading = resultsRegion?.querySelector("#results-heading");
+    focusElement(profileHeading ?? resultsHeading);
+  });
+}
+
+/**
  * Adds global keyboard shortcuts for the profile viewer.
  *
  * @returns {void}
@@ -337,5 +360,6 @@ function registerKeyboardShortcuts() {
 renderShell();
 registerSearch();
 registerHistoryNavigation();
+registerSkipLink();
 registerKeyboardShortcuts();
 loadProfile(initialUsername, { focusTarget: "none" });

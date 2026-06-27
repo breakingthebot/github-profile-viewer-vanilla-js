@@ -137,4 +137,25 @@ test.describe("GitHub profile viewer", () => {
 
     await expect(page.getByLabel("Load a public GitHub account")).toBeFocused();
   });
+
+  /**
+   * Verifies the skip link lands on loaded results and exposes named regions.
+   *
+   * @returns {Promise<void>}
+   */
+  test("supports skip-link navigation into named results panels", async ({ page }) => {
+    await mockGithubApi(page);
+    await page.goto("/");
+
+    await page.keyboard.press("Tab");
+    await expect(page.getByRole("link", { name: "Skip to loaded profile" })).toBeFocused();
+
+    await page.keyboard.press("Enter");
+
+    await expect(page.getByRole("heading", { name: "The Octocat" })).toBeFocused();
+    await expect(page.getByRole("region", { name: "Repository explorer" })).toBeVisible();
+    await expect(page.getByRole("region", { name: "Recent activity" })).toBeVisible();
+    await expect(page.getByLabel("Visible repositories")).toBeVisible();
+    await expect(page.getByLabel("Recent public activity feed")).toBeVisible();
+  });
 });

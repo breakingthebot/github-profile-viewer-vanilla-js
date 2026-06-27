@@ -42,5 +42,13 @@ export function renderRepositoryList(repositories) {
         .join("")
     : `<li class="repository-list__item repository-list__item--empty">No repositories available.</li>`;
 
-  return `<ul class="repository-list">${repositoryItems}</ul>`;
+  return `
+    <ul
+      aria-label="Visible repositories"
+      class="repository-list"
+      data-repository-list
+    >
+      ${repositoryItems}
+    </ul>
+  `;
 }

@@ -17,12 +17,19 @@ import { renderRepositoryList } from "./repositoryList.js";
  */
 export function renderRepositoryExplorer(explorer) {
   return `
-    <section class="panel">
+    <section
+      class="panel"
+      aria-describedby="repository-explorer-copy"
+      aria-labelledby="repository-explorer-title"
+      data-results-panel="repositories"
+    >
       <div class="panel__header panel__header--stacked">
         <div>
           <p class="panel__eyebrow">Repositories</p>
-          <h3>Repository explorer</h3>
-          <p class="panel__copy">Search, sort, and filter the latest public repositories for this account.</p>
+          <h3 id="repository-explorer-title">Repository explorer</h3>
+          <p class="panel__copy" id="repository-explorer-copy">
+            Search, sort, and filter the latest public repositories for this account.
+          </p>
         </div>
       </div>
       ${renderRepositoryControls(explorer.state, explorer.languageOptions)}
