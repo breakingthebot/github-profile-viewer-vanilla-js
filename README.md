@@ -73,6 +73,8 @@ The eighth iteration upgrades the interface from a functional dashboard into a m
 
 The ninth iteration tightens the deployed profile card after live review. The identity block and Directory metadata now have stronger column separation, safer text wrapping, and denser detail cards so longer names or profile values do not bleed across the card on desktop widths.
 
+The tenth iteration improves failure handling instead of adding another data panel. The app now distinguishes invalid usernames, missing accounts, GitHub rate limits, and network failures with clearer guidance and a retry action in the status panel. That makes the viewer feel more dependable when real API conditions are less than ideal, especially on a live deployment.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

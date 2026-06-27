@@ -252,6 +252,10 @@ select {
 }
 
 .status-panel {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
   padding: 1rem 1.2rem;
   margin-bottom: 1.25rem;
 }
@@ -262,6 +266,33 @@ select {
 
 .status-panel--error {
   color: var(--color-error);
+}
+
+.status-panel__content {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.status-panel__message,
+.status-panel__detail {
+  margin: 0;
+}
+
+.status-panel__detail {
+  color: var(--color-muted);
+  max-width: 48rem;
+  line-height: 1.55;
+}
+
+.status-panel__action {
+  flex-shrink: 0;
+  min-height: 2.9rem;
+  padding: 0 1rem;
+  color: #fffaf6;
+  background: linear-gradient(135deg, var(--color-accent), var(--color-accent-strong));
+  border: 1px solid rgba(29, 20, 15, 0.1);
+  border-radius: 999px;
+  cursor: pointer;
 }
 
 .content-grid {
@@ -571,6 +602,11 @@ select {
   .app-shell {
     width: min(calc(100% - 1rem), var(--page-width));
     padding: 1rem 0 3rem;
+  }
+
+  .status-panel {
+    flex-direction: column;
+    align-items: start;
   }
 
   .search-form__controls,

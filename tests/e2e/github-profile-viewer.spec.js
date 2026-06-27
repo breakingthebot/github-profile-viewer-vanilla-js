@@ -106,4 +106,21 @@ test.describe("GitHub profile viewer", () => {
     await expect(page.getByRole("heading", { name: "The Octocat" })).toBeVisible();
     await expect(page).toHaveURL(/user=octocat/);
   });
+
+  /**
+   * Verifies retry-friendly network error messaging.
+   *
+   * @returns {Promise<void>}
+   */
+  test("shows retry guidance when the GitHub API is unavailable", async ({ page }) => {
+    await page.route("https://api.github.com/users/**", async (route) => {
+      await route.abort("failed");
+    });
+
+    await page.goto("/");
+
+    await expect(page.getByText("Unable to reach the GitHub API.")).toBeVisible();
+    await expect(page.getByText("Check your internet connection or try again in a moment.")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Retry request" })).toBeVisible();
+  });
 });

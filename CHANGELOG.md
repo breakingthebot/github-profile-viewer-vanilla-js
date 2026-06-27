@@ -65,3 +65,10 @@
 ### Added
 - Tightened profile-card spacing and wrapping behavior for long names and metadata values.
 - Stronger separation between the identity block and the Directory details column.
+
+## [0.10.0] - 2026-06-27
+
+### Added
+- Normalized GitHub/network error handling with clearer UI messages.
+- Retry action in the status panel for recoverable failures.
+- Unit and browser test coverage for the improved failure states.

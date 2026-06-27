@@ -7,6 +7,7 @@
 
 import { APP_CONFIG } from "../config/appConfig.js";
 import { ENV_CONFIG } from "../config/env.js";
+import { GithubError } from "../models/githubError.js";
 import { logInfo, logError } from "../utils/logger.js";
 
 const USERNAME_PATTERN = /^[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,38})$/;
@@ -22,11 +23,17 @@ export function sanitizeUsername(username) {
   const sanitizedUsername = typeof username === "string" ? username.trim() : "";
 
   if (!sanitizedUsername) {
-    throw new Error("Enter a GitHub username.");
+    throw new GithubError({
+      message: "Enter a GitHub username.",
+      code: "invalid_username",
+    });
   }
 
   if (!USERNAME_PATTERN.test(sanitizedUsername)) {
-    throw new Error("Use a valid GitHub username.");
+    throw new GithubError({
+      message: "Use a valid GitHub username.",
+      code: "invalid_username",
+    });
   }
 
   return sanitizedUsername;
@@ -56,20 +63,41 @@ export function createGithubHeaders() {
  * @throws {Error} When the request fails.
  */
 export async function fetchGithubResource(path) {
-  const response = await fetch(`${APP_CONFIG.apiBaseUrl}${path}`, {
-    headers: createGithubHeaders(),
-  });
+  let response;
+
+  try {
+    response = await fetch(`${APP_CONFIG.apiBaseUrl}${path}`, {
+      headers: createGithubHeaders(),
+    });
+  } catch {
+    throw new GithubError({
+      message: "Unable to reach the GitHub API.",
+      code: "network",
+      retryable: true,
+    });
+  }
 
   if (!response.ok) {
     if (response.status === 404) {
-      throw new Error("GitHub user not found.");
+      throw new GithubError({
+        message: "GitHub user not found.",
+        code: "not_found",
+      });
     }
 
     if (response.status === 403) {
-      throw new Error("GitHub API rate limit reached. Add a token and try again.");
+      throw new GithubError({
+        message: "GitHub API rate limit reached.",
+        code: "rate_limited",
+        retryable: true,
+      });
     }
 
-    throw new Error(`GitHub request failed with status ${response.status}.`);
+    throw new GithubError({
+      message: `GitHub request failed with status ${response.status}.`,
+      code: "request_failed",
+      retryable: true,
+    });
   }
 
   return response.json();

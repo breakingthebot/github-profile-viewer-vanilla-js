@@ -15,12 +15,14 @@ import { APP_CONFIG } from "./config/appConfig.js";
 import { ENV_CONFIG } from "./config/env.js";
 import { createProfileSummary } from "./models/profileSummary.js";
 import { createActivityInsightsModel } from "./models/activityInsights.js";
+import { GithubError } from "./models/githubError.js";
 import {
   createInitialRepositoryExplorerState,
   createRepositoryExplorerModel,
   normalizeRepositoryExplorerState,
 } from "./models/repositoryExplorer.js";
 import { fetchGithubProfileBundle } from "./services/githubApi.js";
+import { createStatusContentFromError } from "./utils/errorMessages.js";
 import { logError, logInfo } from "./utils/logger.js";
 import { createUrlStateSearch, parseUrlState } from "./utils/urlState.js";
 
@@ -82,6 +84,7 @@ function getAppRegions() {
     resultsRegion: document.querySelector("[data-results-region]"),
     form: document.querySelector("[data-search-form]"),
     input: document.querySelector("#username"),
+    statusAction: document.querySelector("[data-status-action]"),
   };
 }
 
@@ -125,11 +128,13 @@ function syncUrlState(mode = "replace") {
  *
  * @param {string} variant - Status type.
  * @param {string} message - Status message.
+ * @param {string} [detail] - Additional status detail.
+ * @param {string} [actionLabel] - Optional button label.
  * @returns {void}
  */
-function updateStatus(variant, message) {
+function updateStatus(variant, message, detail = "", actionLabel = "") {
   const { statusRegion } = getAppRegions();
-  statusRegion.innerHTML = renderStatusPanel(variant, message);
+  statusRegion.innerHTML = renderStatusPanel(variant, message, detail, actionLabel);
 }
 
 /**
@@ -140,6 +145,23 @@ function updateStatus(variant, message) {
 function clearStatus() {
   const { statusRegion } = getAppRegions();
   statusRegion.innerHTML = "";
+}
+
+/**
+ * Registers the optional status panel action button.
+ *
+ * @returns {void}
+ */
+function registerStatusAction() {
+  const { statusAction } = getAppRegions();
+
+  if (!statusAction || !currentUsername) {
+    return;
+  }
+
+  statusAction.addEventListener("click", async () => {
+    await loadProfile(currentUsername);
+  });
 }
 
 /**
@@ -164,6 +186,7 @@ function renderResults(summary) {
   `;
 
   registerRepositoryExplorerControls();
+  registerStatusAction();
 }
 
 /**
@@ -230,10 +253,13 @@ async function loadProfile(username, options = {}) {
     renderResults(summary);
     logInfo("ui.render.success", { username: currentUsername });
   } catch (error) {
-    updateStatus("error", error instanceof Error ? error.message : "Unable to load profile.");
+    const statusContent = createStatusContentFromError(error);
+    updateStatus("error", statusContent.message, statusContent.detail, statusContent.actionLabel);
+    registerStatusAction();
     logError("ui.render.failure", {
       username,
       message: error instanceof Error ? error.message : "Unknown error",
+      code: error instanceof GithubError ? error.code : "unknown",
     });
   }
 }

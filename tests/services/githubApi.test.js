@@ -6,6 +6,7 @@
  */
 
 import { afterEach, describe, expect, it, vi } from "vitest";
+import { GithubError } from "../../src/models/githubError.js";
 import {
   createGithubHeaders,
   fetchGithubResource,
@@ -73,7 +74,25 @@ describe("fetchGithubResource", () => {
       }),
     );
 
-    await expect(fetchGithubResource("/users/missing")).rejects.toThrow("GitHub user not found.");
+    await expect(fetchGithubResource("/users/missing")).rejects.toMatchObject({
+      message: "GitHub user not found.",
+      code: "not_found",
+    });
+  });
+
+  /**
+   * Verifies network failures become retryable GitHub errors.
+   *
+   * @returns {Promise<void>}
+   */
+  it("throws a retryable network error when fetch rejects", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("offline")));
+
+    await expect(fetchGithubResource("/users/octocat")).rejects.toMatchObject({
+      message: "Unable to reach the GitHub API.",
+      code: "network",
+      retryable: true,
+    });
   });
 
   /**
