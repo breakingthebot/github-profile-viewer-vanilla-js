@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "files.exclude": {
+    "**/.vercel": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "**/node_modules": true
+  }
+}

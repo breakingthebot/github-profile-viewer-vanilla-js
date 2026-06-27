@@ -36,3 +36,12 @@
 - URL-state persistence for username, repository query, language filter, and sort mode.
 - Back and forward browser navigation support that rehydrates app state from the URL.
 - Unit tests for URL-state parsing and serialization.
+
+## [0.6.0] - 2026-06-27
+
+### Added
+- Vercel deployment configuration for the static Vite build.
+- A `.vercelignore` file aligned with local development artifacts.
+- Deployment scripts for preview and production Vercel releases.
+- Workspace settings for consistent local editor behavior.
+- First live Vercel deployment for the project.
