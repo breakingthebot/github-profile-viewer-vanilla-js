@@ -6,6 +6,7 @@
  */
 
 import { formatDate, formatEventLabel } from "../utils/formatters.js";
+import { escapeHtml } from "../utils/sanitizers.js";
 
 /**
  * Creates the markup for the activity feed.
@@ -19,7 +20,7 @@ export function renderActivityFeed(events) {
         .map(
           (event) => `
             <li class="activity-feed__item">
-              <p class="activity-feed__title">${formatEventLabel(event)}</p>
+              <p class="activity-feed__title">${escapeHtml(formatEventLabel(event))}</p>
               <p class="activity-feed__date">${formatDate(event.created_at)}</p>
             </li>
           `,

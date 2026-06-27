@@ -5,7 +5,8 @@
  * Created: 2026-06-27
  */
 
-import { formatCount } from "../utils/formatters.js";
+import { formatCount, formatDate } from "../utils/formatters.js";
+import { escapeHtml, sanitizeUrl } from "../utils/sanitizers.js";
 
 /**
  * Creates the markup for the GitHub profile summary.
@@ -14,19 +15,22 @@ import { formatCount } from "../utils/formatters.js";
  * @returns {string} Profile card markup.
  */
 export function renderProfileCard(profile) {
+  const websiteUrl = sanitizeUrl(profile.blog);
+  const profileUrl = sanitizeUrl(profile.html_url);
+
   return `
     <article class="profile-card">
       <img
         class="profile-card__avatar"
-        src="${profile.avatar_url}"
-        alt="${profile.login} avatar"
+        src="${sanitizeUrl(profile.avatar_url)}"
+        alt="${escapeHtml(profile.login)} avatar"
         width="96"
         height="96"
       />
       <div class="profile-card__content">
-        <p class="profile-card__eyebrow">@${profile.login}</p>
-        <h2 class="profile-card__title">${profile.name ?? profile.login}</h2>
-        <p class="profile-card__bio">${profile.bio ?? "No public bio available."}</p>
+        <p class="profile-card__eyebrow">@${escapeHtml(profile.login)}</p>
+        <h2 class="profile-card__title">${escapeHtml(profile.name ?? profile.login)}</h2>
+        <p class="profile-card__bio">${escapeHtml(profile.bio ?? "No public bio available.")}</p>
         <dl class="profile-card__stats">
           <div>
             <dt>Followers</dt>
@@ -41,7 +45,31 @@ export function renderProfileCard(profile) {
             <dd>${formatCount(profile.public_repos)}</dd>
           </div>
         </dl>
-        <a class="profile-card__link" href="${profile.html_url}" target="_blank" rel="noreferrer">
+        <dl class="profile-card__details">
+          <div>
+            <dt>Company</dt>
+            <dd>${escapeHtml(profile.company ?? "Not listed")}</dd>
+          </div>
+          <div>
+            <dt>Location</dt>
+            <dd>${escapeHtml(profile.location ?? "Not listed")}</dd>
+          </div>
+          <div>
+            <dt>Joined</dt>
+            <dd>${formatDate(profile.created_at)}</dd>
+          </div>
+          <div>
+            <dt>Website</dt>
+            <dd>
+              ${
+                websiteUrl
+                  ? `<a href="${websiteUrl}" target="_blank" rel="noreferrer">${escapeHtml(profile.blog)}</a>`
+                  : "Not listed"
+              }
+            </dd>
+          </div>
+        </dl>
+        <a class="profile-card__link" href="${profileUrl}" target="_blank" rel="noreferrer">
           View on GitHub
         </a>
       </div>

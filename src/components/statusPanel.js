@@ -5,6 +5,8 @@
  * Created: 2026-06-27
  */
 
+import { escapeHtml } from "../utils/sanitizers.js";
+
 /**
  * Creates status markup for the app shell.
  *
@@ -15,7 +17,7 @@
 export function renderStatusPanel(variant, message) {
   return `
     <section class="status-panel status-panel--${variant}" aria-live="polite">
-      <p>${message}</p>
+      <p>${escapeHtml(message)}</p>
     </section>
   `;
 }

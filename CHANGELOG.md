@@ -7,3 +7,11 @@
 - GitHub profile viewer foundation with profile, repositories, and recent activity sections.
 - Loading, error, and empty states in the UI.
 - API service and utility tests with Vitest.
+
+## [0.2.0] - 2026-06-27
+
+### Added
+- Repository explorer controls for search, language filtering, and sorting.
+- Repository insight metrics for visible repos, stars, languages, and the top-starred repo.
+- Expanded profile metadata including company, location, website, and join date.
+- Unit tests for repository filtering and summary logic.

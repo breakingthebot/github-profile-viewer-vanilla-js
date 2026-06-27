@@ -5,6 +5,8 @@
  * Created: 2026-06-27
  */
 
+import { escapeHtml } from "../utils/sanitizers.js";
+
 /**
  * Creates the markup for the search form.
  *
@@ -12,6 +14,8 @@
  * @returns {string} Search form markup.
  */
 export function renderSearchForm(defaultUsername) {
+  const safeDefaultUsername = escapeHtml(defaultUsername);
+
   return `
     <form class="search-form" data-search-form>
       <label class="search-form__label" for="username">GitHub username</label>
@@ -22,7 +26,7 @@ export function renderSearchForm(defaultUsername) {
           name="username"
           type="text"
           placeholder="Enter a GitHub username"
-          value="${defaultUsername}"
+          value="${safeDefaultUsername}"
           autocomplete="off"
           spellcheck="false"
         />

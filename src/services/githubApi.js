@@ -89,7 +89,7 @@ export async function fetchGithubProfileBundle(username) {
   try {
     const [profile, repositories, events] = await Promise.all([
       fetchGithubResource(`/users/${sanitizedUsername}`),
-      fetchGithubResource(`/users/${sanitizedUsername}/repos?sort=updated&per_page=8`),
+      fetchGithubResource(`/users/${sanitizedUsername}/repos?sort=updated&per_page=24`),
       fetchGithubResource(`/users/${sanitizedUsername}/events/public?per_page=6`),
     ]);
 

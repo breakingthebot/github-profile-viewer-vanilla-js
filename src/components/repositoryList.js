@@ -1,11 +1,12 @@
 /**
  * File: src/components/repositoryList.js
- * Purpose: Renders the repository list section.
- * Connects to: src/main.js, src/utils/formatters.js
+ * Purpose: Renders the repository list items for the repository explorer.
+ * Connects to: src/components/repositoryExplorer.js, src/utils/formatters.js
  * Created: 2026-06-27
  */
 
 import { formatCount, formatDate } from "../utils/formatters.js";
+import { escapeHtml, sanitizeUrl } from "../utils/sanitizers.js";
 
 /**
  * Creates the markup for a repository list.
@@ -17,29 +18,27 @@ export function renderRepositoryList(repositories) {
   const repositoryItems = repositories.length
     ? repositories
         .map(
-          (repository) => `
+          (repository) => {
+            const repositoryUrl = sanitizeUrl(repository.html_url);
+
+            return `
             <li class="repository-list__item">
-              <a class="repository-list__name" href="${repository.html_url}" target="_blank" rel="noreferrer">
-                ${repository.name}
+              <a class="repository-list__name" href="${repositoryUrl}" target="_blank" rel="noreferrer">
+                ${escapeHtml(repository.name)}
               </a>
-              <p class="repository-list__description">${repository.description ?? "No description provided."}</p>
+              <p class="repository-list__description">${escapeHtml(repository.description ?? "No description provided.")}</p>
               <div class="repository-list__meta">
-                <span>★ ${formatCount(repository.stargazers_count)}</span>
-                <span>${repository.language ?? "Unknown language"}</span>
+                <span>Stars ${formatCount(repository.stargazers_count)}</span>
+                <span>Forks ${formatCount(repository.forks_count)}</span>
+                <span>${escapeHtml(repository.language ?? "Unknown language")}</span>
                 <span>Updated ${formatDate(repository.updated_at)}</span>
               </div>
             </li>
-          `,
+          `;
+          },
         )
         .join("")
     : `<li class="repository-list__item repository-list__item--empty">No repositories available.</li>`;
 
-  return `
-    <section class="panel">
-      <div class="panel__header">
-        <h3>Recent repositories</h3>
-      </div>
-      <ul class="repository-list">${repositoryItems}</ul>
-    </section>
-  `;
+  return `<ul class="repository-list">${repositoryItems}</ul>`;
 }

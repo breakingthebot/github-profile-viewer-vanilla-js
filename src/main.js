@@ -1,24 +1,30 @@
 /**
  * File: src/main.js
  * Purpose: Boots the app, handles user interactions, and coordinates data loading and rendering.
- * Connects to: src/components/*, src/config/*, src/models/profileSummary.js, src/services/githubApi.js
+ * Connects to: src/components/*, src/config/*, src/models/*, src/services/githubApi.js
  * Created: 2026-06-27
  */
 
 import "./styles/main.css";
 import { renderActivityFeed } from "./components/activityFeed.js";
 import { renderProfileCard } from "./components/profileCard.js";
-import { renderRepositoryList } from "./components/repositoryList.js";
+import { renderRepositoryExplorer } from "./components/repositoryExplorer.js";
 import { renderSearchForm } from "./components/searchForm.js";
 import { renderStatusPanel } from "./components/statusPanel.js";
 import { APP_CONFIG } from "./config/appConfig.js";
 import { ENV_CONFIG } from "./config/env.js";
 import { createProfileSummary } from "./models/profileSummary.js";
+import {
+  createInitialRepositoryExplorerState,
+  createRepositoryExplorerModel,
+} from "./models/repositoryExplorer.js";
 import { fetchGithubProfileBundle } from "./services/githubApi.js";
 import { logError, logInfo } from "./utils/logger.js";
 
 const appRoot = document.querySelector("#app");
 const initialUsername = ENV_CONFIG.defaultUsername || APP_CONFIG.defaultUsername;
+let currentSummary = null;
+let repositoryExplorerState = createInitialRepositoryExplorerState();
 
 /**
  * Renders the static application shell.
@@ -87,16 +93,58 @@ function clearStatus() {
  */
 function renderResults(summary) {
   const { resultsRegion } = getAppRegions();
+  const repositoryExplorer = createRepositoryExplorerModel(summary.repositories, repositoryExplorerState);
 
   resultsRegion.innerHTML = `
     ${renderProfileCard(summary.profile)}
     <section class="content-grid">
-      ${renderRepositoryList(summary.repositories)}
+      ${renderRepositoryExplorer(repositoryExplorer)}
       <div class="side-column">
         ${renderActivityFeed(summary.events)}
       </div>
     </section>
   `;
+
+  registerRepositoryExplorerControls();
+}
+
+/**
+ * Handles repository explorer input changes and re-renders the current results.
+ *
+ * @returns {void}
+ */
+function registerRepositoryExplorerControls() {
+  const repositoryQueryInput = document.querySelector("[data-repository-query]");
+  const repositoryLanguageSelect = document.querySelector("[data-repository-language]");
+  const repositorySortSelect = document.querySelector("[data-repository-sort]");
+
+  if (!repositoryQueryInput || !repositoryLanguageSelect || !repositorySortSelect || !currentSummary) {
+    return;
+  }
+
+  repositoryQueryInput.addEventListener("input", (event) => {
+    repositoryExplorerState = {
+      ...repositoryExplorerState,
+      query: event.target.value,
+    };
+    renderResults(currentSummary);
+  });
+
+  repositoryLanguageSelect.addEventListener("change", (event) => {
+    repositoryExplorerState = {
+      ...repositoryExplorerState,
+      language: event.target.value,
+    };
+    renderResults(currentSummary);
+  });
+
+  repositorySortSelect.addEventListener("change", (event) => {
+    repositoryExplorerState = {
+      ...repositoryExplorerState,
+      sort: event.target.value,
+    };
+    renderResults(currentSummary);
+  });
 }
 
 /**
@@ -109,8 +157,10 @@ async function loadProfile(username) {
   updateStatus("loading", `Loading ${username}...`);
 
   try {
+    repositoryExplorerState = createInitialRepositoryExplorerState();
     const profileBundle = await fetchGithubProfileBundle(username);
     const summary = createProfileSummary(profileBundle);
+    currentSummary = summary;
     clearStatus();
     renderResults(summary);
     logInfo("ui.render.success", { username });

@@ -8,6 +8,7 @@
 export const APP_CONFIG = {
   apiBaseUrl: "https://api.github.com",
   defaultUsername: "octocat",
-  maxReposToShow: 8,
+  maxReposToShow: 24,
   maxEventsToShow: 6,
+  defaultRepositorySort: "updated",
 };
