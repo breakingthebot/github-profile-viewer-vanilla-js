@@ -1,0 +1,272 @@
+/*
+File: src/styles/main.css
+Purpose: Defines the visual system and layout for the GitHub profile viewer.
+Connects to: src/main.js, index.html
+Created: 2026-06-27
+*/
+
+:root {
+  color-scheme: light;
+  --color-background: #f3efe6;
+  --color-surface: rgba(255, 255, 255, 0.84);
+  --color-surface-strong: #ffffff;
+  --color-text: #1f1b18;
+  --color-muted: #6b6259;
+  --color-border: rgba(31, 27, 24, 0.12);
+  --color-accent: #0f766e;
+  --color-accent-strong: #115e59;
+  --color-error: #b42318;
+  --shadow-panel: 0 18px 40px rgba(63, 45, 30, 0.12);
+  --radius-large: 28px;
+  --radius-medium: 20px;
+  --radius-small: 14px;
+  --page-width: 1120px;
+  --font-body: "Segoe UI", sans-serif;
+  --font-display: "Georgia", serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(180, 35, 24, 0.12), transparent 24%),
+    linear-gradient(180deg, #fcfaf6 0%, var(--color-background) 100%);
+}
+
+a {
+  color: inherit;
+}
+
+.app-shell {
+  width: min(calc(100% - 2rem), var(--page-width));
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+}
+
+.hero {
+  display: grid;
+  gap: 1rem;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(14px);
+}
+
+.hero__eyebrow {
+  margin: 0;
+  color: var(--color-accent-strong);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 8vw, 4.8rem);
+  line-height: 0.95;
+}
+
+.hero__copy {
+  max-width: 48rem;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.search-form {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-form__label {
+  font-weight: 700;
+}
+
+.search-form__controls {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.search-form__input,
+.search-form__button {
+  min-height: 3.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  font: inherit;
+}
+
+.search-form__input {
+  flex: 1 1 16rem;
+  padding: 0 1rem;
+  background: var(--color-surface-strong);
+}
+
+.search-form__button {
+  padding: 0 1.25rem;
+  color: #ffffff;
+  background: var(--color-accent);
+  cursor: pointer;
+}
+
+.search-form__button:hover,
+.search-form__button:focus-visible {
+  background: var(--color-accent-strong);
+}
+
+.status-panel,
+.profile-card,
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(14px);
+}
+
+.status-panel {
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-panel--error {
+  color: var(--color-error);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 1.5rem;
+}
+
+.profile-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.25rem;
+  padding: 1.5rem;
+}
+
+.profile-card__avatar {
+  border-radius: 24px;
+}
+
+.profile-card__content {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.profile-card__eyebrow,
+.profile-card__bio {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+.profile-card__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 2rem;
+}
+
+.profile-card__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.profile-card__stats div,
+.repository-list__item,
+.activity-feed__item {
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.58);
+  border-radius: var(--radius-small);
+}
+
+.profile-card__stats dt {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+}
+
+.profile-card__stats dd {
+  margin: 0.35rem 0 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.profile-card__link {
+  width: fit-content;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.side-column,
+.panel {
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  padding: 1.25rem;
+}
+
+.panel__header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.repository-list,
+.activity-feed {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.repository-list__name {
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.repository-list__description,
+.activity-feed__title,
+.activity-feed__date {
+  margin: 0.45rem 0 0;
+  color: var(--color-muted);
+}
+
+.repository-list__meta {
+  display: flex;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  margin-top: 0.75rem;
+  color: var(--color-muted);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 860px) {
+  .content-grid,
+  .profile-card {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card__stats {
+    grid-template-columns: 1fr;
+  }
+}
