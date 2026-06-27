@@ -17,8 +17,10 @@ import { escapeHtml } from "../utils/sanitizers.js";
  * @returns {string} Status panel markup.
  */
 export function renderStatusPanel(variant, message, detail = "", actionLabel = "") {
+  const liveRole = variant === "error" ? "alert" : "status";
+
   return `
-    <section class="status-panel status-panel--${variant}" aria-live="polite">
+    <section class="status-panel status-panel--${variant}" role="${liveRole}" aria-live="polite" tabindex="-1">
       <div class="status-panel__content">
         <p class="status-panel__message">${escapeHtml(message)}</p>
         ${detail ? `<p class="status-panel__detail">${escapeHtml(detail)}</p>` : ""}

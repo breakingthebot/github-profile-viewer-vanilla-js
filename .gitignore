@@ -4,6 +4,7 @@
 # Created: 2026-06-27
 
 AGENTS.md
+AGENTS.clean.md
 .env
 node_modules/
 dist/

@@ -30,7 +30,7 @@ export function renderProfileCard(profile) {
         />
         <div class="profile-card__identity-copy">
           <p class="profile-card__eyebrow">@${escapeHtml(profile.login)}</p>
-          <h2 class="profile-card__title">${escapeHtml(profile.name ?? profile.login)}</h2>
+          <h2 class="profile-card__title" data-profile-heading tabindex="-1">${escapeHtml(profile.name ?? profile.login)}</h2>
           <p class="profile-card__bio">${escapeHtml(profile.bio ?? "No public bio available.")}</p>
         </div>
       </div>

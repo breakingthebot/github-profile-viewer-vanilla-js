@@ -75,6 +75,8 @@ The ninth iteration tightens the deployed profile card after live review. The id
 
 The tenth iteration improves failure handling instead of adding another data panel. The app now distinguishes invalid usernames, missing accounts, GitHub rate limits, and network failures with clearer guidance and a retry action in the status panel. That makes the viewer feel more dependable when real API conditions are less than ideal, especially on a live deployment.
 
+The eleventh iteration improves keyboard and focus behavior. The app now includes a skip link, a slash shortcut that jumps directly to the username input, stronger status semantics for assistive technologies, and better focus management after successful loads and recoverable failures. That keeps the richer interface usable as it becomes more polished.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

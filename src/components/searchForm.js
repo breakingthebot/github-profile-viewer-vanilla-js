@@ -32,10 +32,11 @@ export function renderSearchForm(defaultUsername) {
           value="${safeDefaultUsername}"
           autocomplete="off"
           spellcheck="false"
+          aria-describedby="username-hint"
         />
         <button class="search-form__button" type="submit">Load profile</button>
       </div>
-      <p class="search-form__hint">Try <span>octocat</span>, <span>vercel</span>, or any public GitHub username.</p>
+      <p class="search-form__hint" id="username-hint">Try <span>octocat</span>, <span>vercel</span>, or any public GitHub username.</p>
     </form>
   `;
 }

@@ -42,6 +42,7 @@ let repositoryExplorerState = initialUrlState.repositoryExplorerState;
 function renderShell() {
   appRoot.innerHTML = `
     <main class="app-shell">
+      <a class="skip-link" href="#results">Skip to loaded profile</a>
       <section class="hero">
         <div class="hero__content">
           <p class="hero__eyebrow">Editorial GitHub Explorer</p>
@@ -68,7 +69,7 @@ function renderShell() {
       </section>
       ${renderSearchForm(initialUsername)}
       <section data-status-region></section>
-      <section data-results-region></section>
+      <section id="results" data-results-region tabindex="-1"></section>
     </main>
   `;
 }
@@ -85,7 +86,18 @@ function getAppRegions() {
     form: document.querySelector("[data-search-form]"),
     input: document.querySelector("#username"),
     statusAction: document.querySelector("[data-status-action]"),
+    profileHeading: document.querySelector("[data-profile-heading]"),
   };
+}
+
+/**
+ * Focuses an element without scrolling the page unexpectedly.
+ *
+ * @param {HTMLElement | null} element - Target element.
+ * @returns {void}
+ */
+function focusElement(element) {
+  element?.focus({ preventScroll: true });
 }
 
 /**
@@ -235,7 +247,7 @@ function registerRepositoryExplorerControls() {
  * Loads GitHub data and updates the UI state.
  *
  * @param {string} username - GitHub username to load.
- * @param {{historyMode?: "replace" | "push"}} options - Load behavior options.
+ * @param {{historyMode?: "replace" | "push", focusTarget?: "none" | "results" | "status"}} options - Load behavior options.
  * @returns {Promise<void>} Resolves when rendering completes.
  */
 async function loadProfile(username, options = {}) {
@@ -251,11 +263,19 @@ async function loadProfile(username, options = {}) {
     syncUrlState(options.historyMode ?? "replace");
     clearStatus();
     renderResults(summary);
+    if ((options.focusTarget ?? "none") === "results") {
+      const { profileHeading } = getAppRegions();
+      focusElement(profileHeading);
+    }
     logInfo("ui.render.success", { username: currentUsername });
   } catch (error) {
     const statusContent = createStatusContentFromError(error);
     updateStatus("error", statusContent.message, statusContent.detail, statusContent.actionLabel);
     registerStatusAction();
+    if ((options.focusTarget ?? "status") === "status") {
+      const { statusAction, statusRegion } = getAppRegions();
+      focusElement(statusAction ?? statusRegion);
+    }
     logError("ui.render.failure", {
       username,
       message: error instanceof Error ? error.message : "Unknown error",
@@ -274,7 +294,7 @@ function registerSearch() {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    await loadProfile(input.value, { historyMode: "push" });
+    await loadProfile(input.value, { historyMode: "push", focusTarget: "results" });
   });
 }
 
@@ -289,11 +309,33 @@ function registerHistoryNavigation() {
 
     repositoryExplorerState = nextUrlState.repositoryExplorerState;
     syncSearchInput(nextUrlState.username);
-    await loadProfile(nextUrlState.username);
+    await loadProfile(nextUrlState.username, { focusTarget: "none" });
+  });
+}
+
+/**
+ * Adds global keyboard shortcuts for the profile viewer.
+ *
+ * @returns {void}
+ */
+function registerKeyboardShortcuts() {
+  window.addEventListener("keydown", (event) => {
+    const target = event.target;
+    const isTypingTarget =
+      target instanceof HTMLElement &&
+      (target.matches("input, textarea, select, button") || target.isContentEditable);
+
+    if (event.key === "/" && !isTypingTarget && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault();
+      const { input } = getAppRegions();
+      focusElement(input);
+      input?.select();
+    }
   });
 }
 
 renderShell();
 registerSearch();
 registerHistoryNavigation();
-loadProfile(initialUsername);
+registerKeyboardShortcuts();
+loadProfile(initialUsername, { focusTarget: "none" });

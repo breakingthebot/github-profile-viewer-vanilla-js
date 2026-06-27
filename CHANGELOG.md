@@ -72,3 +72,10 @@
 - Normalized GitHub/network error handling with clearer UI messages.
 - Retry action in the status panel for recoverable failures.
 - Unit and browser test coverage for the improved failure states.
+
+## [0.11.0] - 2026-06-27
+
+### Added
+- Accessibility and keyboard refinements including a skip link and slash-to-focus shortcut.
+- Better focus management after loads and recoverable errors.
+- Browser coverage for the keyboard shortcut behavior.

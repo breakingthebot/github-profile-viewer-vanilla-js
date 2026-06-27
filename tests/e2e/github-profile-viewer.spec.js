@@ -123,4 +123,18 @@ test.describe("GitHub profile viewer", () => {
     await expect(page.getByText("Check your internet connection or try again in a moment.")).toBeVisible();
     await expect(page.getByRole("button", { name: "Retry request" })).toBeVisible();
   });
+
+  /**
+   * Verifies the global slash shortcut focuses the username input.
+   *
+   * @returns {Promise<void>}
+   */
+  test("focuses the username input with the slash shortcut", async ({ page }) => {
+    await mockGithubApi(page);
+    await page.goto("/");
+
+    await page.keyboard.press("/");
+
+    await expect(page.getByLabel("Load a public GitHub account")).toBeFocused();
+  });
 });
