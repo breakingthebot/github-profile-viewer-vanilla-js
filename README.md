@@ -69,6 +69,8 @@ The sixth iteration adds deployment wiring for Vercel and ships the first live h
 
 The seventh iteration adds browser-level test coverage around the app's main workflow. Playwright now runs the viewer in a real browser, stubs GitHub API responses for deterministic results, and verifies search, repository filtering, URL persistence, refresh behavior, browser history, and the empty-activity state. CI now runs those end-to-end checks in addition to the existing unit tests and build.
 
+The eighth iteration upgrades the interface from a functional dashboard into a more editorial product surface. The hero now explains the product more clearly, the search form feels like a primary entry point instead of a plain control strip, and the profile, repository, and activity sections have stronger hierarchy, spacing, and typography. The underlying behavior stays the same, but the app now presents that information with more intention and visual rhythm.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

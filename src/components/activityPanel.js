@@ -20,6 +20,7 @@ export function renderActivityPanel(activity) {
     <section class="panel">
       <div class="panel__header panel__header--stacked">
         <div>
+          <p class="panel__eyebrow">Activity</p>
           <h3>Recent activity</h3>
           <p class="panel__copy">
             ${

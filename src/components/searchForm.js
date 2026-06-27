@@ -18,7 +18,10 @@ export function renderSearchForm(defaultUsername) {
 
   return `
     <form class="search-form" data-search-form>
-      <label class="search-form__label" for="username">GitHub username</label>
+      <div class="search-form__heading">
+        <p class="search-form__eyebrow">Profile lookup</p>
+        <label class="search-form__label" for="username">Load a public GitHub account</label>
+      </div>
       <div class="search-form__controls">
         <input
           class="search-form__input"
@@ -32,6 +35,7 @@ export function renderSearchForm(defaultUsername) {
         />
         <button class="search-form__button" type="submit">Load profile</button>
       </div>
+      <p class="search-form__hint">Try <span>octocat</span>, <span>vercel</span>, or any public GitHub username.</p>
     </form>
   `;
 }

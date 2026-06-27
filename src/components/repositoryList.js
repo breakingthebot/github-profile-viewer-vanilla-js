@@ -23,14 +23,16 @@ export function renderRepositoryList(repositories) {
 
             return `
             <li class="repository-list__item">
-              <a class="repository-list__name" href="${repositoryUrl}" target="_blank" rel="noreferrer">
-                ${escapeHtml(repository.name)}
-              </a>
+              <div class="repository-list__topline">
+                <a class="repository-list__name" href="${repositoryUrl}" target="_blank" rel="noreferrer">
+                  ${escapeHtml(repository.name)}
+                </a>
+                <span class="repository-list__language">${escapeHtml(repository.language ?? "Unknown language")}</span>
+              </div>
               <p class="repository-list__description">${escapeHtml(repository.description ?? "No description provided.")}</p>
               <div class="repository-list__meta">
                 <span>Stars ${formatCount(repository.stargazers_count)}</span>
                 <span>Forks ${formatCount(repository.forks_count)}</span>
-                <span>${escapeHtml(repository.language ?? "Unknown language")}</span>
                 <span>Updated ${formatDate(repository.updated_at)}</span>
               </div>
             </li>

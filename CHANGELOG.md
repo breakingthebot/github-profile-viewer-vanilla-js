@@ -52,3 +52,10 @@
 - Playwright end-to-end browser tests for the core profile-viewer flow.
 - Deterministic GitHub API fixtures for browser tests.
 - CI coverage for headless Chromium end-to-end verification.
+
+## [0.8.0] - 2026-06-27
+
+### Added
+- Editorial-style visual redesign across the hero, search form, profile, repository, and activity sections.
+- Stronger typography, spacing, panel hierarchy, and badge treatments for clearer scanning.
+- Mobile-friendly layout refinements that preserve the existing functionality.

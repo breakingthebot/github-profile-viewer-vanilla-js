@@ -20,6 +20,7 @@ export function renderRepositoryExplorer(explorer) {
     <section class="panel">
       <div class="panel__header panel__header--stacked">
         <div>
+          <p class="panel__eyebrow">Repositories</p>
           <h3>Repository explorer</h3>
           <p class="panel__copy">Search, sort, and filter the latest public repositories for this account.</p>
         </div>

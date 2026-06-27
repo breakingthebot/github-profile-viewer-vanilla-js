@@ -20,17 +20,21 @@ export function renderProfileCard(profile) {
 
   return `
     <article class="profile-card">
-      <img
-        class="profile-card__avatar"
-        src="${sanitizeUrl(profile.avatar_url)}"
-        alt="${escapeHtml(profile.login)} avatar"
-        width="96"
-        height="96"
-      />
+      <div class="profile-card__identity">
+        <img
+          class="profile-card__avatar"
+          src="${sanitizeUrl(profile.avatar_url)}"
+          alt="${escapeHtml(profile.login)} avatar"
+          width="112"
+          height="112"
+        />
+        <div class="profile-card__identity-copy">
+          <p class="profile-card__eyebrow">@${escapeHtml(profile.login)}</p>
+          <h2 class="profile-card__title">${escapeHtml(profile.name ?? profile.login)}</h2>
+          <p class="profile-card__bio">${escapeHtml(profile.bio ?? "No public bio available.")}</p>
+        </div>
+      </div>
       <div class="profile-card__content">
-        <p class="profile-card__eyebrow">@${escapeHtml(profile.login)}</p>
-        <h2 class="profile-card__title">${escapeHtml(profile.name ?? profile.login)}</h2>
-        <p class="profile-card__bio">${escapeHtml(profile.bio ?? "No public bio available.")}</p>
         <dl class="profile-card__stats">
           <div>
             <dt>Followers</dt>
@@ -45,6 +49,7 @@ export function renderProfileCard(profile) {
             <dd>${formatCount(profile.public_repos)}</dd>
           </div>
         </dl>
+        <div class="profile-card__section-label">Directory</div>
         <dl class="profile-card__details">
           <div>
             <dt>Company</dt>
@@ -70,7 +75,7 @@ export function renderProfileCard(profile) {
           </div>
         </dl>
         <a class="profile-card__link" href="${profileUrl}" target="_blank" rel="noreferrer">
-          View on GitHub
+          Open full GitHub profile
         </a>
       </div>
     </article>

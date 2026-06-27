@@ -41,12 +41,28 @@ function renderShell() {
   appRoot.innerHTML = `
     <main class="app-shell">
       <section class="hero">
-        <p class="hero__eyebrow">Async GitHub API Viewer</p>
-        <h1 class="hero__title">Explore profiles, repos, and public activity.</h1>
-        <p class="hero__copy">
-          Search for any public GitHub account and review the profile summary, recently updated repositories,
-          and recent public activity in one place.
-        </p>
+        <div class="hero__content">
+          <p class="hero__eyebrow">Editorial GitHub Explorer</p>
+          <h1 class="hero__title">See the shape of a GitHub account, not just the raw profile.</h1>
+          <p class="hero__copy">
+            Search any public GitHub username and scan the profile story in one calm interface: identity,
+            repositories, recent public activity, and shareable state that survives refreshes.
+          </p>
+        </div>
+        <dl class="hero__highlights" aria-label="Product highlights">
+          <div>
+            <dt>Profile snapshot</dt>
+            <dd>Bio, location, company, website, and audience signals.</dd>
+          </div>
+          <div>
+            <dt>Repository lens</dt>
+            <dd>Filter, sort, and compare recent repos without leaving the page.</dd>
+          </div>
+          <div>
+            <dt>Activity pulse</dt>
+            <dd>Public event trends, top repositories, and recent momentum.</dd>
+          </div>
+        </dl>
       </section>
       ${renderSearchForm(initialUsername)}
       <section data-status-region></section>

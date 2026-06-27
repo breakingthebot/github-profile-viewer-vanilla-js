@@ -95,7 +95,7 @@ test.describe("GitHub profile viewer", () => {
     await mockGithubApi(page);
     await page.goto("/");
 
-    await page.getByLabel("GitHub username").fill("vercel");
+    await page.getByLabel("Load a public GitHub account").fill("vercel");
     await page.getByRole("button", { name: "Load profile" }).click();
 
     await expect(page.getByRole("heading", { name: "Vercel" })).toBeVisible();
