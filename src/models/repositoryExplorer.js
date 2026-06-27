@@ -27,6 +27,27 @@ export function createInitialRepositoryExplorerState() {
 }
 
 /**
+ * Normalizes repository explorer state from an unknown input source.
+ *
+ * @param {Partial<{query: string, language: string, sort: string}> | null | undefined} state - Raw repository explorer state.
+ * @returns {{query: string, language: string, sort: string}} Normalized explorer state.
+ */
+export function normalizeRepositoryExplorerState(state) {
+  const initialState = createInitialRepositoryExplorerState();
+  const supportedSorts = new Set(["updated", "stars", "name"]);
+
+  return {
+    query: typeof state?.query === "string" ? state.query.trim() : initialState.query,
+    language:
+      typeof state?.language === "string" && state.language.trim() ? state.language.trim() : initialState.language,
+    sort:
+      typeof state?.sort === "string" && supportedSorts.has(state.sort)
+        ? state.sort
+        : initialState.sort,
+  };
+}
+
+/**
  * Builds the repository explorer model consumed by the UI.
  *
  * @param {Array<object>} repositories - Raw repository list.

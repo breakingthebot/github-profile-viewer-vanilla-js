@@ -56,6 +56,8 @@ The third iteration adds release hygiene around the code that already exists. A 
 
 The fourth iteration makes the activity column more informative. Instead of only listing recent events, the app now summarizes event volume, active days, the most frequently referenced repository, and grouped event-type counts. When GitHub returns no recent public events, the UI now explains that state directly instead of leaving the section feeling sparse.
 
+The fifth iteration makes the interface shareable and refresh-safe. The selected username, repository search query, language filter, and sort mode now live in the URL, so opening the same link restores the same view. Browser back and forward navigation also rehydrate the app state instead of leaving the controls out of sync with the page.
+
 ## Notes
 - GitHub's unauthenticated API has strict rate limits; a personal token is optional but recommended for local development.
 - Public activity depends on the target account having recent public events available through the API.

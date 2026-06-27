@@ -29,3 +29,10 @@
 - Activity breakdown counts grouped by GitHub event type.
 - A clearer empty state for users without recent public activity.
 - Unit tests for activity summary helpers and new formatter behavior.
+
+## [0.5.0] - 2026-06-27
+
+### Added
+- URL-state persistence for username, repository query, language filter, and sort mode.
+- Back and forward browser navigation support that rehydrates app state from the URL.
+- Unit tests for URL-state parsing and serialization.

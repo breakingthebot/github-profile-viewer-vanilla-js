@@ -18,14 +18,19 @@ import { createActivityInsightsModel } from "./models/activityInsights.js";
 import {
   createInitialRepositoryExplorerState,
   createRepositoryExplorerModel,
+  normalizeRepositoryExplorerState,
 } from "./models/repositoryExplorer.js";
 import { fetchGithubProfileBundle } from "./services/githubApi.js";
 import { logError, logInfo } from "./utils/logger.js";
+import { createUrlStateSearch, parseUrlState } from "./utils/urlState.js";
 
 const appRoot = document.querySelector("#app");
-const initialUsername = ENV_CONFIG.defaultUsername || APP_CONFIG.defaultUsername;
+const fallbackUsername = ENV_CONFIG.defaultUsername || APP_CONFIG.defaultUsername;
+const initialUrlState = parseUrlState(window.location.search, fallbackUsername);
+const initialUsername = initialUrlState.username;
 let currentSummary = null;
-let repositoryExplorerState = createInitialRepositoryExplorerState();
+let currentUsername = initialUsername;
+let repositoryExplorerState = initialUrlState.repositoryExplorerState;
 
 /**
  * Renders the static application shell.
@@ -62,6 +67,41 @@ function getAppRegions() {
     form: document.querySelector("[data-search-form]"),
     input: document.querySelector("#username"),
   };
+}
+
+/**
+ * Updates the search input to match the current username state.
+ *
+ * @param {string} username - Username to display in the search input.
+ * @returns {void}
+ */
+function syncSearchInput(username) {
+  const { input } = getAppRegions();
+
+  if (input) {
+    input.value = username;
+  }
+}
+
+/**
+ * Writes the current app state into the browser URL.
+ *
+ * @param {"replace" | "push"} mode - History update mode.
+ * @returns {void}
+ */
+function syncUrlState(mode = "replace") {
+  const search = createUrlStateSearch({
+    username: currentUsername,
+    repositoryExplorerState,
+  });
+  const nextUrl = `${window.location.pathname}?${search}`;
+
+  if (mode === "push") {
+    window.history.pushState(null, "", nextUrl);
+    return;
+  }
+
+  window.history.replaceState(null, "", nextUrl);
 }
 
 /**
@@ -125,26 +165,29 @@ function registerRepositoryExplorerControls() {
   }
 
   repositoryQueryInput.addEventListener("input", (event) => {
-    repositoryExplorerState = {
+    repositoryExplorerState = normalizeRepositoryExplorerState({
       ...repositoryExplorerState,
       query: event.target.value,
-    };
+    });
+    syncUrlState();
     renderResults(currentSummary);
   });
 
   repositoryLanguageSelect.addEventListener("change", (event) => {
-    repositoryExplorerState = {
+    repositoryExplorerState = normalizeRepositoryExplorerState({
       ...repositoryExplorerState,
       language: event.target.value,
-    };
+    });
+    syncUrlState();
     renderResults(currentSummary);
   });
 
   repositorySortSelect.addEventListener("change", (event) => {
-    repositoryExplorerState = {
+    repositoryExplorerState = normalizeRepositoryExplorerState({
       ...repositoryExplorerState,
       sort: event.target.value,
-    };
+    });
+    syncUrlState();
     renderResults(currentSummary);
   });
 }
@@ -153,19 +196,23 @@ function registerRepositoryExplorerControls() {
  * Loads GitHub data and updates the UI state.
  *
  * @param {string} username - GitHub username to load.
+ * @param {{historyMode?: "replace" | "push"}} options - Load behavior options.
  * @returns {Promise<void>} Resolves when rendering completes.
  */
-async function loadProfile(username) {
+async function loadProfile(username, options = {}) {
   updateStatus("loading", `Loading ${username}...`);
 
   try {
-    repositoryExplorerState = createInitialRepositoryExplorerState();
+    currentUsername = username;
     const profileBundle = await fetchGithubProfileBundle(username);
     const summary = createProfileSummary(profileBundle);
     currentSummary = summary;
+    syncSearchInput(summary.profile.login);
+    currentUsername = summary.profile.login;
+    syncUrlState(options.historyMode ?? "replace");
     clearStatus();
     renderResults(summary);
-    logInfo("ui.render.success", { username });
+    logInfo("ui.render.success", { username: currentUsername });
   } catch (error) {
     updateStatus("error", error instanceof Error ? error.message : "Unable to load profile.");
     logError("ui.render.failure", {
@@ -185,10 +232,26 @@ function registerSearch() {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    await loadProfile(input.value);
+    await loadProfile(input.value, { historyMode: "push" });
+  });
+}
+
+/**
+ * Rehydrates app state from browser navigation events.
+ *
+ * @returns {void}
+ */
+function registerHistoryNavigation() {
+  window.addEventListener("popstate", async () => {
+    const nextUrlState = parseUrlState(window.location.search, fallbackUsername);
+
+    repositoryExplorerState = nextUrlState.repositoryExplorerState;
+    syncSearchInput(nextUrlState.username);
+    await loadProfile(nextUrlState.username);
   });
 }
 
 renderShell();
 registerSearch();
+registerHistoryNavigation();
 loadProfile(initialUsername);
